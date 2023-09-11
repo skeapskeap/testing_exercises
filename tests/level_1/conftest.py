@@ -7,27 +7,20 @@ import pytest
 from functions.level_1.four_bank_parser import SmsMessage, BankCard, Expense
 
 
-class DateTestCase(NamedTuple):
-    relative_day: str
-    time_str: str
-    dt_expected: datetime
-
-
 class BankTestCase(NamedTuple):
     sms: SmsMessage
     card: BankCard
     expect_expense: Expense
 
 
-@pytest.fixture(name="date_test_case",
-                params=["tomorrow", "today", None])
-def make_date_testcase(request):
-    dt_expected = datetime.now().replace(hour=12, minute=30, second=0, microsecond=0)
-    relative_day = request.param
-    if relative_day == "tomorrow":
-        dt_expected += timedelta(days=1)
-    time_str = dt_expected.strftime("%H:%M")
-    return DateTestCase(relative_day, time_str, dt_expected)
+@pytest.fixture(name="generate_datetime")
+def dt_generator():
+    def generate_datetime(delta_days=0):
+        return (
+            datetime.now().replace(hour=12, minute=30, second=0, microsecond=0)
+            + timedelta(days=delta_days)
+        )
+    return generate_datetime
 
 
 @pytest.fixture(
