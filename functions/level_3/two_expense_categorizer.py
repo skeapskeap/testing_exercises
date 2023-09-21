@@ -1,4 +1,4 @@
-from functions.level_1_7.models import Expense, ExpenseCategory
+from functions.level_3.models import Expense, ExpenseCategory
 
 
 def guess_expense_category(expense: Expense) -> ExpenseCategory | None:

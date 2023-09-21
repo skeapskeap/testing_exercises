@@ -2,7 +2,7 @@ import collections
 import decimal
 from statistics import mean
 
-from functions.level_1_7.models import Expense
+from functions.level_3.models import Expense
 
 
 def calculate_average_daily_expenses(expenses: list[Expense]) -> decimal.Decimal:

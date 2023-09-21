@@ -1,4 +1,4 @@
-from functions.level_1_7.models import Expense
+from functions.level_3.models import Expense
 
 
 def find_fraud_expenses(history: list[Expense]) -> list[Expense]:
