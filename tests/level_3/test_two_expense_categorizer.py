@@ -5,16 +5,6 @@ from functions.level_3.two_expense_categorizer import guess_expense_category, \
     is_string_contains_trigger
 
 
-@pytest.fixture(params={" ", ",", ".", "-", "/", "\\"})
-def delimiter(request):
-    return request.param
-
-
-@pytest.fixture
-def trigger():
-    return "trigger_val"
-
-
 def test__is_string_contains_trigger__string_is_trigger(trigger):
     trigger = "trigger_val"
     assert is_string_contains_trigger(trigger, trigger)
@@ -65,12 +55,12 @@ def test__is_string_contains_trigger__string_not_contains_trigger():
     ("-tomsarkgh-", ExpenseCategory.THEATRES_MOVIES_CULTURE),
     ("-gg platform-", ExpenseCategory.TRANSPORT),
 ])
-def test__guess_expense_category__returns_category(trigger, category, make_expense_spent_in):
+def test__guess_expense_category__returns_category(trigger, category, make_expense_with_defaults):
     spent_in = f"any {trigger} words"
-    assert guess_expense_category(make_expense_spent_in(spent_in)) == category
+    assert guess_expense_category(make_expense_with_defaults(spent_in=spent_in)) == category
 
 
 @pytest.mark.parametrize("trigger", ["", "no_trigger_word_here"])
-def test__guess_expense_category__returns_none(trigger, make_expense_spent_in):
+def test__guess_expense_category__returns_none(trigger, make_expense_with_defaults):
     spent_in = f"any {trigger} words"
-    assert guess_expense_category(make_expense_spent_in(spent_in)) is None
+    assert guess_expense_category(make_expense_with_defaults(spent_in=spent_in)) is None

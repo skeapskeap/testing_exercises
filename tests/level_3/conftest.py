@@ -8,39 +8,34 @@ from functions.level_3.models import Expense, Currency, BankCard
 
 @pytest.fixture
 def make_bank_card():
+    return BankCard(last_digits="1234", owner="Mr Owner")
 
-    def _make_bank_card():
-        return BankCard(last_digits="1234", owner="Mr Owner")
 
-    return _make_bank_card
+@pytest.fixture(params={" ", ",", ".", "-", "/", "\\"})
+def delimiter(request):
+    return request.param
 
 
 @pytest.fixture
-def make_expense_at_date(make_bank_card):
+def trigger():
+    return "trigger_val"
 
-    def _make_expense_at_date(amount: int,
-                              spent_at: datetime,
-                              currency=Currency.RUB.value,
-                              ) -> Expense:
+
+@pytest.fixture
+def make_expense_with_defaults(make_bank_card):
+
+    def _make_expense_with_defaults(amount=1,
+                                    spent_at=None,
+                                    currency=Currency.RUB.value,
+                                    card=None,
+                                    spent_in="Store Name",
+                                    category=None,
+                                    ) -> Expense:
         return Expense(amount=Decimal(amount),
-                       spent_at=spent_at,
+                       spent_at=spent_at or datetime.now(),
                        currency=currency,
-                       card=make_bank_card,
-                       spent_in="Store Name",
-                       category=None)
-
-    return _make_expense_at_date
-
-
-@pytest.fixture
-def make_expense_spent_in(make_bank_card):
-
-    def _make_expense_spent_in(spent_in: str) -> Expense:
-        return Expense(amount=Decimal(1),
-                       spent_at=datetime.now(),
-                       currency=Currency.RUB.value,
-                       card=make_bank_card,
+                       card=card or make_bank_card,
                        spent_in=spent_in,
-                       category=None)
+                       category=category)
 
-    return _make_expense_spent_in
+    return _make_expense_with_defaults
