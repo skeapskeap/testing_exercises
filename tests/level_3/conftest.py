@@ -30,3 +30,17 @@ def make_expense_at_date(make_bank_card):
                        category=None)
 
     return _make_expense_at_date
+
+
+@pytest.fixture
+def make_expense_spent_in(make_bank_card):
+
+    def _make_expense_spent_in(spent_in: str) -> Expense:
+        return Expense(amount=Decimal(1),
+                       spent_at=datetime.now(),
+                       currency=Currency.RUB.value,
+                       card=make_bank_card,
+                       spent_in=spent_in,
+                       category=None)
+
+    return _make_expense_spent_in

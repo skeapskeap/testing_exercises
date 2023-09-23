@@ -1,5 +1,6 @@
 import pytest
 
+from functions.level_3.models import ExpenseCategory
 from functions.level_3.two_expense_categorizer import guess_expense_category, \
     is_string_contains_trigger
 
@@ -54,3 +55,22 @@ def test__is_string_contains_trigger__not_allowed_delimiter(trigger):
 
 def test__is_string_contains_trigger__string_not_contains_trigger():
     assert not is_string_contains_trigger("string value", "trigger_value")
+
+
+@pytest.mark.parametrize("trigger, category", [
+    ("-asador-", ExpenseCategory.BAR_RESTAURANT),
+    ("-chinar-", ExpenseCategory.SUPERMARKET),
+    ("-apple.com/bill-", ExpenseCategory.ONLINE_SUBSCRIPTIONS),
+    ("-farm-", ExpenseCategory.MEDICINE_PHARMACY),
+    ("-tomsarkgh-", ExpenseCategory.THEATRES_MOVIES_CULTURE),
+    ("-gg platform-", ExpenseCategory.TRANSPORT),
+])
+def test__guess_expense_category__returns_category(trigger, category, make_expense_spent_in):
+    spent_in = f"any {trigger} words"
+    assert guess_expense_category(make_expense_spent_in(spent_in)) == category
+
+
+@pytest.mark.parametrize("trigger", ["", "no_trigger_word_here"])
+def test__guess_expense_category__returns_none(trigger, make_expense_spent_in):
+    spent_in = f"any {trigger} words"
+    assert guess_expense_category(make_expense_spent_in(spent_in)) is None
