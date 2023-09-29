@@ -1,7 +1,7 @@
 import collections
 import operator
 
-from functions.level_1_7.models import Expense
+from functions.level_3.models import Expense
 
 
 def is_subscription(expense: Expense, history: list[Expense]) -> bool:
