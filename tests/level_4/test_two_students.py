@@ -3,11 +3,6 @@ import pytest
 from functions.level_4.two_students import get_student_by_tg_nickname, Student
 
 
-@pytest.fixture
-def tg_user_name():
-    return "tg_test_user"
-
-
 def test__get_student_by_tg_nickname__returns_first_match(tg_user_name):
     students = [
         Student("Name", "Surname", f"@telegram_account"),
